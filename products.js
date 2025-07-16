@@ -1,228 +1,243 @@
-// Product Manager Module
-const productManager = (() => {
-    // Sample product data
-    let products = JSON.parse(localStorage.getItem('products')) || [
-        {
-            id: 'PRD-1001',
-            name: 'Organic Tomatoes',
-            cropType: 'Vegetables',
-            plantingDate: '2023-03-15',
-            harvestDate: '2023-06-20',
-            shelfLife: 14,
-            storage: 'Refrigerated',
-            packaging: 'Plastic crates, 10kg each'
-        },
-        {
-            id: 'PRD-1002',
-            name: 'Golden Apples',
-            cropType: 'Fruits',
-            plantingDate: '2022-11-10',
-            harvestDate: '2023-04-25',
-            shelfLife: 30,
-            storage: 'Cold Storage',
-            packaging: 'Wooden boxes, 20kg each'
-        }
-    ];
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("Product Management System Initialized");
 
-    // DOM Elements
-    const elements = {
-        tableBody: document.querySelector('#productsTable tbody'),
-        searchInput: document.getElementById('searchInput'),
-        filterSelect: document.getElementById('filterSelect'),
-        modal: new bootstrap.Modal('#productModal'),
-        modalTitle: document.getElementById('modalTitle'),
-        form: document.getElementById('productForm'),
-        saveBtn: document.getElementById('saveBtn'),
-        productId: document.getElementById('productId'),
-        nameInput: document.getElementById('nameInput'),
-        typeSelect: document.getElementById('typeSelect'),
-        plantDateInput: document.getElementById('plantDateInput'),
-        harvestDateInput: document.getElementById('harvestDateInput'),
-        shelfLifeInput: document.getElementById('shelfLifeInput'),
-        storageSelect: document.getElementById('storageSelect'),
-        packagingInput: document.getElementById('packagingInput')
+    // Crop icons mapping
+    const cropIcons = {
+        'Fruits': 'fa-apple-whole',
+        'Vegetables': 'fa-carrot',
+        'Grains': 'fa-wheat-awn',
+        'Dairy': 'fa-cow',
+        'Meat': 'fa-drumstick-bite',
+        'Herbs': 'fa-leaf',
+        'Nuts': 'fa-peanut',
+        'default': 'fa-seedling'
     };
 
-    // Initialize
-    function init() {
-        renderTable();
-        setupEventListeners();
+    // Initialize products from localStorage or with sample data
+    let products = JSON.parse(localStorage.getItem('products')) || [];
+    if (products.length === 0) {
+        products = [
+            {
+                id: 'PRD-' + Date.now(),
+                name: 'Organic Apples',
+                cropType: 'Fruits',
+                plantingDate: '2023-01-15',
+                harvestDate: '2023-10-20',
+                shelfLife: 30,
+                storage: 'Cold Storage',
+                packaging: 'Cardboard boxes'
+            },
+            {
+                id: 'PRD-' + (Date.now() + 1),
+                name: 'Fresh Carrots',
+                cropType: 'Vegetables',
+                plantingDate: '2023-03-10',
+                harvestDate: '2023-09-15',
+                shelfLife: 21,
+                storage: 'Refrigerated',
+                packaging: 'Plastic bags'
+            }
+        ];
+        localStorage.setItem('products', JSON.stringify(products));
     }
 
-    // Set up event listeners
+    // DOM Elements
+    const productTableBody = document.getElementById('productTableBody');
+    const noProductsMessage = document.getElementById('noProductsMessage');
+    const addProductBtn = document.getElementById('addProductBtn');
+    const saveBtn = document.getElementById('saveProductBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const productForm = document.getElementById('productForm');
+    const editProductId = document.getElementById('editProductId');
+    
+    // Modal elements
+    const addProductModal = document.getElementById('addProductModal');
+    const deleteProductModal = document.getElementById('deleteProductModal');
+    const modalCloseBtns = document.querySelectorAll('.close');
+
+    // Initial render
+    renderTable();
+    setupEventListeners();
+
     function setupEventListeners() {
-        elements.saveBtn.addEventListener('click', handleSave);
-        elements.searchInput.addEventListener('input', handleSearch);
-        elements.filterSelect.addEventListener('change', handleFilter);
+        // Add Product button
+        addProductBtn.addEventListener('click', function() {
+            productForm.reset();
+            editProductId.value = '';
+            document.getElementById('productModalTitle').textContent = 'Add New Product';
+            saveBtn.textContent = 'Save Product';
+            addProductModal.style.display = 'block';
+        });
+
+        // Save Product button
+        saveBtn.addEventListener('click', handleSave);
+
+        // Cancel button
+        cancelBtn.addEventListener('click', function() {
+            addProductModal.style.display = 'none';
+        });
+
+        // Confirm Delete button
+        confirmDeleteBtn.addEventListener('click', handleDelete);
+
+        // Cancel Delete button
+        cancelDeleteBtn.addEventListener('click', function() {
+            deleteProductModal.style.display = 'none';
+        });
+
+        // Modal close buttons
+        modalCloseBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const modal = this.closest('.modal');
+                modal.style.display = 'none';
+            });
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+
+        // Table event delegation for edit/delete buttons
+        productTableBody.addEventListener('click', function(e) {
+            const editBtn = e.target.closest('.edit-btn');
+            const deleteBtn = e.target.closest('.delete-btn');
+            
+            if (editBtn) {
+                handleEdit(editBtn.dataset.id);
+            }
+            if (deleteBtn) {
+                showDeleteModal(deleteBtn.dataset.id);
+            }
+        });
     }
 
-    // Render products table
-    function renderTable(productsToRender = products) {
-        elements.tableBody.innerHTML = '';
-        
-        productsToRender.forEach(product => {
+    function renderTable() {
+        productTableBody.innerHTML = '';
+
+        if (products.length === 0) {
+            noProductsMessage.style.display = 'block';
+            return;
+        }
+
+        noProductsMessage.style.display = 'none';
+
+        products.forEach(product => {
+            const status = calculateStatus(product.harvestDate, product.shelfLife);
+            const iconClass = cropIcons[product.cropType] || cropIcons.default;
+            const statusClass = status === 'Active' ? 'status-active' : 'status-expired';
+
             const row = document.createElement('tr');
             row.innerHTML = `
+                <td><div class="product-image"><i class="fas ${iconClass}"></i></div></td>
                 <td>${product.id}</td>
                 <td>${product.name}</td>
                 <td>${product.cropType}</td>
                 <td>${formatDate(product.plantingDate)}</td>
                 <td>${formatDate(product.harvestDate)}</td>
                 <td>${product.shelfLife} days</td>
-                <td>${product.storage}</td>
+                <td><span class="status-badge ${statusClass}">${status}</span></td>
                 <td>
-                    <button class="btn btn-sm btn-warning me-1 edit-btn" data-id="${product.id}">
-                        <i class="fas fa-edit"></i>
+                    <button class="btn btn-warning edit-btn" data-id="${product.id}">
+                        <i class="fas fa-edit"></i> Edit
                     </button>
-                    <button class="btn btn-sm btn-danger delete-btn" data-id="${product.id}">
+                    <button class="btn btn-danger delete-btn" data-id="${product.id}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
             `;
-            elements.tableBody.appendChild(row);
+            productTableBody.appendChild(row);
         });
+    }
 
-        // Add event listeners to action buttons
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', () => handleEdit(btn.dataset.id));
-        });
+    function calculateStatus(harvestDate, shelfLife) {
+        if (!harvestDate || !shelfLife) return 'Active';
         
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', () => handleDelete(btn.dataset.id));
-        });
-    }
-
-    // Handle save product
-    function handleSave() {
-        if (!validateForm()) return;
-
-        const productData = {
-            id: elements.productId.value || generateId(),
-            name: elements.nameInput.value,
-            cropType: elements.typeSelect.value,
-            plantingDate: elements.plantDateInput.value,
-            harvestDate: elements.harvestDateInput.value,
-            shelfLife: parseInt(elements.shelfLifeInput.value),
-            storage: elements.storageSelect.value,
-            packaging: elements.packagingInput.value
-        };
-
-        if (elements.productId.value) {
-            // Update existing product
-            const index = products.findIndex(p => p.id === elements.productId.value);
-            if (index !== -1) products[index] = productData;
-        } else {
-            // Add new product
-            products.push(productData);
-        }
-
-        saveToLocalStorage();
-        renderTable();
-        elements.modal.hide();
-        resetForm();
-    }
-
-    // Handle edit product
-    function handleEdit(id) {
-        const product = products.find(p => p.id === id);
-        if (!product) return;
-
-        elements.modalTitle.textContent = 'Edit Product';
-        elements.productId.value = product.id;
-        elements.nameInput.value = product.name;
-        elements.typeSelect.value = product.cropType;
-        elements.plantDateInput.value = product.plantingDate;
-        elements.harvestDateInput.value = product.harvestDate;
-        elements.shelfLifeInput.value = product.shelfLife;
-        elements.storageSelect.value = product.storage;
-        elements.packagingInput.value = product.packaging || '';
-        elements.saveBtn.textContent = 'Update Product';
-
-        elements.modal.show();
-    }
-
-    // Handle delete product
-    function handleDelete(id) {
-        if (!confirm('Are you sure you want to delete this product?')) return;
+        const harvest = new Date(harvestDate);
+        const expiryDate = new Date(harvest);
+        expiryDate.setDate(expiryDate.getDate() + shelfLife);
         
-        products = products.filter(p => p.id !== id);
-        saveToLocalStorage();
-        renderTable();
-    }
-
-    // Handle search
-    function handleSearch() {
-        const term = elements.searchInput.value.toLowerCase();
-        const filtered = products.filter(p => 
-            p.name.toLowerCase().includes(term) || 
-            p.cropType.toLowerCase().includes(term)
-        );
-        renderTable(filtered);
-    }
-
-    // Handle filter
-    function handleFilter() {
-        const value = elements.filterSelect.value;
-        const filtered = value ? products.filter(p => p.cropType === value) : products;
-        renderTable(filtered);
-    }
-
-    // Helper functions
-    function generateId() {
-        return `PRD-${1000 + products.length + 1}`;
-    }
-
-    function validateForm() {
-        const requiredFields = [
-            elements.nameInput,
-            elements.typeSelect,
-            elements.plantDateInput,
-            elements.harvestDateInput,
-            elements.shelfLifeInput,
-            elements.storageSelect
-        ];
-
-        let isValid = true;
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                isValid = false;
-                field.classList.add('is-invalid');
-            } else {
-                field.classList.remove('is-invalid');
-            }
-        });
-
-        // Date validation
-        const plantDate = new Date(elements.plantDateInput.value);
-        const harvestDate = new Date(elements.harvestDateInput.value);
-        if (harvestDate <= plantDate) {
-            alert('Harvest date must be after planting date');
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    function resetForm() {
-        elements.form.reset();
-        elements.productId.value = '';
-        elements.modalTitle.textContent = 'Add New Product';
-        elements.saveBtn.textContent = 'Save Product';
+        return new Date() <= expiryDate ? 'Active' : 'Expired';
     }
 
     function formatDate(dateString) {
-        return new Date(dateString).toLocaleDateString();
+        if (!dateString) return 'N/A';
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
     }
 
-    function saveToLocalStorage() {
+    function handleSave() {
+        const productId = editProductId.value;
+        const productData = {
+            id: productId || 'PRD-' + Date.now(),
+            name: document.getElementById('productName').value.trim(),
+            cropType: document.getElementById('cropType').value,
+            plantingDate: document.getElementById('plantingDate').value,
+            harvestDate: document.getElementById('harvestDate').value,
+            shelfLife: parseInt(document.getElementById('shelfLife').value),
+            storage: document.getElementById('storageReq').value,
+            packaging: document.getElementById('packagingDetails').value
+        };
+
+        // Validation
+        if (!productData.name || !productData.cropType || !productData.plantingDate || 
+            !productData.harvestDate || isNaN(productData.shelfLife)) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+        // Save to array
+        if (productId) {
+            const index = products.findIndex(p => p.id === productId);
+            if (index !== -1) products[index] = productData;
+        } else {
+            products.push(productData);
+        }
+
+        // Save to storage
         localStorage.setItem('products', JSON.stringify(products));
+        
+        // Update UI
+        renderTable();
+        addProductModal.style.display = 'none';
     }
 
-    // Public API
-    return {
-        init
-    };
-})();
+    function handleEdit(id) {
+        const product = products.find(p => p.id === id);
+        if (product) {
+            document.getElementById('productModalTitle').textContent = 'Edit Product';
+            editProductId.value = product.id;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('cropType').value = product.cropType;
+            document.getElementById('plantingDate').value = product.plantingDate;
+            document.getElementById('harvestDate').value = product.harvestDate;
+            document.getElementById('shelfLife').value = product.shelfLife;
+            document.getElementById('storageReq').value = product.storage;
+            document.getElementById('packagingDetails').value = product.packaging;
+            saveBtn.textContent = 'Update Product';
+            addProductModal.style.display = 'block';
+        }
+    }
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', productManager.init);
+    function showDeleteModal(id) {
+        const product = products.find(p => p.id === id);
+        if (product) {
+            document.getElementById('deleteProductText').innerHTML = 
+                `Are you sure you want to delete <strong>${product.name}</strong>?`;
+            confirmDeleteBtn.dataset.id = id;
+            deleteProductModal.style.display = 'block';
+        }
+    }
+
+    function handleDelete() {
+        const id = this.dataset.id;
+        products = products.filter(p => p.id !== id);
+        localStorage.setItem('products', JSON.stringify(products));
+        renderTable();
+        deleteProductModal.style.display = 'none';
+    }
+});
