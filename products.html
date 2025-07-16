@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriChain | Product Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Navigation and sidebar same as dashboard -->
+
+    <div class="container-fluid pt-5 mt-3">
+        <div class="row">
+            <!-- Sidebar same as dashboard -->
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Product Management</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
+                            <i class="fas fa-plus me-1"></i>Add Product
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search and Filter Section -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search products...">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select" id="filterSelect">
+                            <option value="">All Crop Types</option>
+                            <option>Fruits</option>
+                            <option>Vegetables</option>
+                            <option>Grains</option>
+                            <option>Dairy</option>
+                            <option>Meat</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="productsTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Product ID</th>
+                                        <th>Name</th>
+                                        <th>Crop Type</th>
+                                        <th>Planting Date</th>
+                                        <th>Harvest Date</th>
+                                        <th>Shelf Life</th>
+                                        <th>Storage</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Product rows will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Product Modal (Add/Edit) -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalTitle">Add New Product</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Product Name *</label>
+                                <input type="text" class="form-control" id="nameInput" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Crop Type *</label>
+                                <select class="form-select" id="typeSelect" required>
+                                    <option value="">Select Crop Type</option>
+                                    <option>Fruits</option>
+                                    <option>Vegetables</option>
+                                    <option>Grains</option>
+                                    <option>Dairy</option>
+                                    <option>Meat</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Planting Date *</label>
+                                <input type="date" class="form-control" id="plantDateInput" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Harvest Date *</label>
+                                <input type="date" class="form-control" id="harvestDateInput" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Shelf Life (days) *</label>
+                                <input type="number" class="form-control" id="shelfLifeInput" min="1" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Storage Requirements *</label>
+                                <select class="form-select" id="storageSelect" required>
+                                    <option value="">Select Storage</option>
+                                    <option>Refrigerated</option>
+                                    <option>Cold Storage</option>
+                                    <option>Room Temperature</option>
+                                    <option>Controlled Atmosphere</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Packaging Details</label>
+                            <textarea class="form-control" id="packagingInput" rows="2"></textarea>
+                        </div>
+                        <input type="hidden" id="productId">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveBtn">Save Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/products.js"></script>
+</body>
+</html>
