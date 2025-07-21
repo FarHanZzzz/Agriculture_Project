@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriConnect | Modern Farming Solutions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #5D9C59;
+      --primary-dark: #3D7C47;
+      --primary-light: #8DBB8A;
+      --secondary: #D9A566;
+      --secondary-dark: #B88542;
+      --dark: #3E2723;
+      --light: #F8F3E6;
+      --gray: #7D8B8F;
+      --light-gray: #EFF4F5;
+      --white: #FFFFFF;
+      --transition: all 0.3s ease;
+      --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      border: none;
+      font-size: 1rem;
+      text-decoration: none;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: var(--white);
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .btn-secondary {
+      background: var(--secondary);
+      color: var(--dark);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--secondary-dark);
+      transform: translateY(-3px);
+      color: var(--white);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background: var(--primary);
+      color: var(--white);
+    }
+    
+    /* -------- Navbar -------- */
+    .navbar {
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 5%;
+      background-color: var(--white);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    
+    .logo i {
+      font-size: 1.5rem;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+    
+    .nav-links a {
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+      font-size: 1.05rem;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      bottom: -8px;
+      left: 0;
+      background-color: var(--primary);
+      transition: var(--transition);
+      border-radius: 2px;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .nav-links a.active {
+      color: var(--primary);
+    }
+    
+    .nav-links a.active::after {
+      width: 100%;
+    }
+    
+    .auth-buttons {
+      display: flex;
+      gap: 0.8rem;
+    }
+    
+    .auth-btn {
+      padding: 0.7rem 1.5rem;
+      border-radius: 30px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 1rem;
+    }
+    
+    .login-btn {
+      background: transparent;
+      color: var(--primary);
+    }
+    
+    .login-btn:hover {
+      background: rgba(93, 156, 89, 0.1);
+    }
+    
+    .register-btn {
+      background: var(--primary);
+      color: var(--white);
+    }
+    
+    .register-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--dark);
+      cursor: pointer;
+    }
+    
+    /* -------- Hero Section -------- */
+    .hero {
+      display: flex;
+      align-items: center;
+      min-height: 95vh;
+      padding: 0 5%;
+      background: linear-gradient(rgba(62, 39, 35, 0.7), rgba(62, 39, 35, 0.7)), 
+                  url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      color: var(--white);
+      position: relative;
+    }
+    
+    .hero-content {
+      max-width: 650px;
+      padding: 2rem 0;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+      max-width: 600px;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    
+    .cta-btn {
+      padding: 1rem 2.5rem;
+      background: var(--secondary);
+      color: var(--dark);
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .cta-btn i {
+      transition: var(--transition);
+    }
+    
+    .cta-btn:hover i {
+      transform: translateX(5px);
+    }
+    
+    /* -------- Stats Section -------- */
+    .stats {
+      background: var(--white);
+      padding: 4rem 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    
+    .stat-card {
+      text-align: center;
+      padding: 1.5rem;
+      min-width: 200px;
+    }
+    
+    .stat-value {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 1.1rem;
+      color: var(--gray);
+      font-weight: 500;
+    }
+    
+    /* -------- Services Section -------- */
+    .services {
+      padding: 6rem 0;
+      background: var(--light-gray);
+    }
+    
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 4rem;
+    }
+    
+    .section-title {
+      font-size: 2.8rem;
+      margin-bottom: 1.2rem;
+      color: var(--primary);
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      width: 70px;
+      height: 4px;
+      background: var(--secondary);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    
+    .section-subtitle {
+      font-size: 1.2rem;
+      color: var(--gray);
+      line-height: 1.8;
+    }
+    
+    .cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+    }
+    
+    .card {
+      background: var(--white);
+      border-radius: 15px;
+      padding: 2.5rem 2rem;
+      width: 340px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0;
+      background: var(--primary);
+      transition: var(--transition);
+      z-index: -1;
+    }
+    
+    .card:hover {
+      transform: translateY(-15px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .card:hover::before {
+      height: 100%;
+    }
+    
+    .card:hover .card-icon {
+      background: var(--white);
+      color: var(--primary);
+    }
+    
+    .card:hover h3,
+    .card:hover p {
+      color: var(--white);
+    }
+    
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.8rem;
+      color: var(--primary);
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(93, 156, 89, 0.1);
+      border-radius: 50%;
+      margin: 0 auto 1.8rem;
+      transition: var(--transition);
+    }
+    
+    .card h3 {
+      font-size: 1.7rem;
+      margin-bottom: 1.2rem;
+      color: var(--dark);
+      transition: var(--transition);
+    }
+    
+    .card p {
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      transition: var(--transition);
+      line-height: 1.8;
+    }
+    
+    .card .btn {
+      padding: 0.6rem 1.5rem;
+      font-size: 0.9rem;
+    }
+    
+    /* -------- Features Section -------- */
+    .features {
+      padding: 6rem 0;
+      background: var(--white);
+    }
+    
+    .features-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4rem;
+      align-items: center;
+    }
+    
+    .features-img {
+      flex: 1;
+      min-width: 300px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .features-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: var(--transition);
+    }
+    
+    .features-img:hover img {
+      transform: scale(1.05);
+    }
+    
+    .features-content {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .features-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+    
+    .features-content p {
+      color: var(--gray);
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+    
+    .feature-list {
+      list-style: none;
+    }
+    
+    .feature-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-start;
+    }
+    
+    .feature-icon {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-top: 0.3rem;
+    }
+    
+    .feature-text h4 {
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+      color: var(--dark);
+    }
+    
+    .feature-text p {
+      margin-bottom: 0;
+    }
+    
+    /* -------- Testimonials Section -------- */
+    .testimonials {
+      padding: 6rem 0;
+      background: linear-gradient(rgba(93, 156, 89, 0.9), rgba(93, 156, 89, 0.9)), 
+                  url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      color: var(--white);
+      text-align: center;
+    }
+    
+    .testimonial-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .testimonial-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 2.5rem;
+      margin: 2rem 0;
+      backdrop-filter: blur(10px);
+      text-align: left;
+    }
+    
+    .testimonial-text {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      position: relative;
+    }
+    
+    .testimonial-text::before,
+    .testimonial-text::after {
+      content: '"';
+      font-size: 3rem;
+      color: rgba(255, 255, 255, 0.3);
+      position: absolute;
+    }
+    
+    .testimonial-text::before {
+      top: -20px;
+      left: -15px;
+    }
+    
+    .testimonial-text::after {
+      content: '"';
+      bottom: -40px;
+      right: -15px;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .author-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--secondary);
+    }
+    
+    .author-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .author-info h4 {
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+    }
+    
+    .author-info p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+    }
+    
+    /* -------- Contact Section -------- */
+    .contact {
+      padding: 6rem 0;
+      background: var(--light-gray);
+    }
+    
+    .contact-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4rem;
+    }
+    
+    .contact-info {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .contact-info h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+    
+    .contact-info p {
+      color: var(--gray);
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+    
+    .contact-methods {
+      list-style: none;
+    }
+    
+    .contact-method {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 1.8rem;
+      align-items: flex-start;
+    }
+    
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      background: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.3rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .contact-details h4 {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+    
+    .contact-details p, 
+    .contact-details a {
+      color: var(--gray);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .contact-details a:hover {
+      color: var(--primary);
+    }
+    
+    .contact-form {
+      flex: 1;
+      min-width: 300px;
+      background: var(--white);
+      border-radius: 15px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1.2rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(93, 156, 89, 0.2);
+    }
+    
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+    
+    /* -------- Footer -------- */
+    .footer {
+      background: var(--dark);
+      color: var(--light);
+      padding: 4rem 0 2rem;
+    }
+    
+    .footer-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    
+    .footer-col {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .footer-col h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      color: var(--white);
+      position: relative;
+      padding-bottom: 0.8rem;
+    }
+    
+    .footer-col h3::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 3px;
+      background: var(--primary);
+      bottom: 0;
+      left: 0;
+      border-radius: 2px;
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.8rem;
+    }
+    
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-block;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+      transform: translateX(5px);
+    }
+    
+    .footer-about p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+    
+    .social-links a:hover {
+      background: var(--primary);
+      transform: translateY(-3px);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+    }
+    
+    /* -------- Modal -------- */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+    
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background: var(--white);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      transform: translateY(-50px);
+      transition: var(--transition);
+      position: relative;
+    }
+    
+    .modal.active .modal-content {
+      transform: translateY(0);
+    }
+    
+    .modal-header {
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .modal-header h2 {
+      font-size: 1.5rem;
+      color: var(--dark);
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--gray);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .close-modal:hover {
+      color: var(--dark);
+    }
+    
+    .modal-body {
+      padding: 1.5rem;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .tab {
+      padding: 0.8rem 1.5rem;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--gray);
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+    }
+    
+    .tab.active {
+      color: var(--primary);
+    }
+    
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px 3px 0 0;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem 1.2rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1rem;
+      transition: var(--transition);
+      margin-bottom: 1rem;
+    }
+    
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .remember input {
+      margin: 0;
+    }
+    
+    .remember label {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    .forgot-password {
+      color: var(--primary);
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 1rem;
+    }
+    
+    .submit-btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .alternative-login {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .alternative-login p {
+      color: var(--gray);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    
+    .alternative-login p::before,
+    .alternative-login p::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 1px;
+      background: #eee;
+    }
+    
+    .alternative-login p::before {
+      left: 0;
+    }
+    
+    .alternative-login p::after {
+      right: 0;
+    }
+    
+    .social-login {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    .social-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 1.2rem;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .google-btn {
+      background: #DB4437;
+    }
+    
+    .facebook-btn {
+      background: #4267B2;
+    }
+    
+    .twitter-btn {
+      background: #1DA1F2;
+    }
+    
+    .social-btn:hover {
+      transform: translateY(-3px);
+    }
+    
+    .signup-link {
+      text-align: center;
+      color: var(--gray);
+    }
+    
+    .signup-link a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+      
+      .section-title {
+        font-size: 2.5rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .mobile-toggle {
+        display: block;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        flex-direction: column;
+        background: var(--white);
+        width: 100%;
+        text-align: center;
+        padding: 2rem 0;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+        gap: 1.5rem;
+      }
+      
+      .nav-links.active {
+        left: 0;
+      }
+      
+      .auth-buttons {
+        display: none;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+      }
+      
+      .cta-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .stats-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .footer-container {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .navbar {
+        padding: 1rem;
+      }
+      
+      .hero {
+        min-height: 85vh;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .modal-content {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="logo"><i class="fas fa-seedling"></i> FRAASS</a>
+    <div class="nav-links">
+      <a href="#" class="active">Home</a>
+      <a href="#services">Services</a>
+      <a href="#features">Features</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="auth-buttons">
+      <button class="auth-btn login-btn" id="loginBtn">Login</button>
+      <button class="auth-btn register-btn" id="registerBtn">Register</button>
+    </div>
+    <button class="mobile-toggle" id="mobileToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Innovative Farming for a Sustainable Future</h1>
+        <p>Empowering farmers with cutting-edge agricultural solutions that increase yield while protecting our planet. Join thousands of farmers revolutionizing agriculture with our smart solutions.</p>
+        <div class="cta-buttons">
+          <button class="btn btn-outline">Learn More</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-value">15K+</div>
+          <div class="stat-label">Farmers Connected</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">92%</div>
+          <div class="stat-label">Increased Yield</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">40%</div>
+          <div class="stat-label">Water Saved</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">120+</div>
+          <div class="stat-label">Communities</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">We provide comprehensive agricultural solutions tailored to modern farming needs. Our services are designed to maximize efficiency, sustainability, and profitability.</p>
+      </div>
+      
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-leaf"></i></div>
+          <h3>Organic Farming</h3>
+          <p>Chemical-free cultivation methods that produce healthier crops and protect the environment. Our experts guide you through sustainable practices.</p>
+          <button class="btn btn-outline">Learn More</button>
+        </div>
+        
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-tint"></i></div>
+          <h3>Smart Irrigation</h3>
+          <p>AI-powered water management systems that optimize usage and reduce waste. Save up to 60% water while improving crop health.</p>
+          <button class="btn btn-outline">Learn More</button>
+        </div>
+        
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-tractor"></i></div>
+          <h3>Tech Solutions</h3>
+          <p>Modern equipment and digital tools to maximize efficiency and productivity. From soil sensors to drone monitoring.</p>
+          <button class="btn btn-outline">Learn More</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-container">
+        <div class="features-img">
+          <img src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Modern Farming">
+        </div>
+        <div class="features-content">
+          <h2>Transforming Agriculture with Technology</h2>
+          <p>Our platform integrates cutting-edge technology with traditional farming wisdom to create sustainable solutions for the modern farmer.</p>
+          
+          <ul class="feature-list">
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+              <div class="feature-text">
+                <h4>Real-time Monitoring</h4>
+                <p>Track soil conditions, weather patterns, and crop health in real-time.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+              <div class="feature-text">
+                <h4>Data-Driven Insights</h4>
+                <p>Get actionable recommendations based on comprehensive data analysis.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+              <div class="feature-text">
+                <h4>Market Access</h4>
+                <p>Connect directly with buyers and get fair prices for your produce.</p>
+              </div>
+            </li>
+          </ul>
+          
+          <button class="btn btn-primary">Discover Our Technology</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Success Stories</h2>
+        <p class="section-subtitle">Hear from farmers who have transformed their operations with AgriConnect solutions.</p>
+      </div>
+      
+      <div class="testimonial-container">
+        <div class="testimonial-card">
+          <p class="testimonial-text">ITS the best </p>
+          <div class="testimonial-author">
+            <div class="author-img">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="PAJEEET">
+            </div>
+            <div class="author-info">
+              <h4>Rajesh Kumar</h4>
+              <p>Organic Farmer, Punjab</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="contact-container">
+        <div class="contact-info">
+          <h2>Get In Touch</h2>
+          <p>Have questions about our solutions? Our team is ready to help you transform your farming operations with our innovative technology.</p>
+          
+          <ul class="contact-methods">
+            <li class="contact-method">
+              <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+              <div class="contact-details">
+                <h4>Our Location</h4>
+                <p>123 Farm Tech Park, New Delhi, India</p>
+              </div>
+            </li>
+            <li class="contact-method">
+              <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+              <div class="contact-details">
+                <h4>Call Us</h4>
+                <p>+91 98765 43210</p>
+              </div>
+            </li>
+            <li class="contact-method">
+              <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+              <div class="contact-details">
+                <h4>Email Us</h4>
+                <p><a href="mailto:info@agriconnect.com">info@agriconnect.com</a></p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="contact-form">
+          <form>
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" class="form-control" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" class="form-control" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" class="form-control" placeholder="Enter subject">
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" class="form-control" placeholder="Enter your message"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-col footer-about">
+          <h3>About AgriConnect</h3>
+          <p>AgriConnect is a leading provider of smart farming solutions, helping farmers increase productivity while preserving natural resources through innovative technology.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#features">Technology</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h3>Our Services</h3>
+          <ul class="footer-links">
+            <li><a href="#">Smart Irrigation</a></li>
+            <li><a href="#">Crop Monitoring</a></li>
+            <li><a href="#">Soil Analysis</a></li>
+            <li><a href="#">Market Access</a></li>
+            <li><a href="#">Training Programs</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h3>Newsletter</h3>
+          <p>Subscribe to our newsletter for farming tips and updates.</p>
+          <form>
+            <div class="form-group">
+              <input type="email" class="form-control" placeholder="Your Email Address">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 AgriConnect. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--primary);"></i> for Farmers</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Login/Register Modal -->
+  <div class="modal" id="authModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Login to Your Account</h2>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="tabs">
+          <button class="tab active" data-tab="login">Login</button>
+          <button class="tab" data-tab="register">Register</button>
+        </div>
+        
+        <div class="tab-content active" id="login-tab">
+          <form>
+            <div class="form-group">
+              <input type="email" placeholder="Email Address" required>
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" required>
+            </div>
+            <div class="remember-forgot">
+              <div class="remember">
+                <input type="checkbox" id="remember">
+                <label for="remember">Remember me</label>
+              </div>
+              <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+            <button type="submit" class="submit-btn">Login</button>
+            
+            <div class="alternative-login">
+              <p>Or login with</p>
+              <div class="social-login">
+                <button class="social-btn google-btn"><i class="fab fa-google"></i></button>
+                <button class="social-btn facebook-btn"><i class="fab fa-facebook-f"></i></button>
+                <button class="social-btn twitter-btn"><i class="fab fa-twitter"></i></button>
+              </div>
+            </div>
+            
+            <p class="signup-link">Don't have an account? <a href="#" id="switchToRegister">Register Now</a></p>
+          </form>
+        </div>
+        
+        <div class="tab-content" id="register-tab">
+          <form>
+            <div class="form-group">
+              <input type="text" placeholder="Full Name" required>
+            </div>
+            <div class="form-group">
+              <input type="email" placeholder="Email Address" required>
+            </div>
+            <div class="form-group">
+              <input type="tel" placeholder="Phone Number" required>
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Confirm Password" required>
+            </div>
+            <div class="form-group">
+              <select class="form-control">
+                <option value="">Select Farm Type</option>
+                <option value="vegetable">Vegetable Farming</option>
+                <option value="fruit">Fruit Farming</option>
+                <option value="grain">Grain Farming</option>
+                <option value="dairy">Dairy Farming</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="checkbox" id="terms">
+              <label for="terms">I agree to the Terms & Conditions</label>
+            </div>
+            <button type="submit" class="submit-btn">Create Account</button>
+            
+            <p class="signup-link">Already have an account? <a href="#" id="switchToLogin">Login Now</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="home.js"></script>
+
+
+
+  
+
+</body>
+</html>

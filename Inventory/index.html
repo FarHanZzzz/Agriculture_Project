@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agri-Inventory Manager</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --primary-dark: #388E3C;
+      --secondary: #FFC107;
+      --dark: #263238;
+      --light: #f5f7fa;
+      --danger: #f44336;
+      --warning: #ff9800;
+      --info: #2196F3;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+      z-index: 0;
+    }
+    
+    .header {
+      position: relative;
+      padding: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      z-index: 1;
+    }
+    
+    .header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .view-toggle {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    
+    .btn i {
+      font-size: 16px;
+    }
+    
+    .btn-primary {
+      background-color: var(--secondary);
+      color: var(--dark);
+    }
+    
+    .btn-primary:hover {
+      background-color: #e0a800;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .btn-info {
+      background-color: var(--info);
+      color: white;
+    }
+    
+    .btn-info:hover {
+      background-color: #0b7dda;
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+    
+    .content {
+      padding: 0 30px 30px;
+      position: relative;
+    }
+    
+    .search-bar {
+      display: flex;
+      margin-bottom: 25px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    
+    .search-bar input {
+      flex: 1;
+      padding: 14px 20px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+    }
+    
+    .search-bar button {
+      padding: 0 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .search-bar button:hover {
+      background: var(--primary-dark);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    
+    th, td {
+      padding: 16px 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    th {
+      background-color: var(--primary);
+      color: white;
+      font-weight: 500;
+      position: sticky;
+      top: 0;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    tr:hover td {
+      background-color: rgba(76, 175, 80, 0.05);
+    }
+    
+    .product-image {
+      width: 40px;
+      height: 40px;
+      background-color: #e9f5ee;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+    
+    .action-btns {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      color: white;
+    }
+    
+    .edit-btn {
+      background-color: var(--warning);
+    }
+    
+    .delete-btn {
+      background-color: var(--danger);
+    }
+    
+    .info-btn {
+      background-color: var(--info);
+    }
+    
+    .action-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .no-data {
+      text-align: center;
+      padding: 60px;
+      color: #6c757d;
+      border: 2px dashed rgba(0,0,0,0.1);
+      border-radius: 12px;
+      margin-top: 20px;
+      background: white;
+    }
+    
+    .no-data i {
+      font-size: 48px;
+      color: #b0bec5;
+      margin-bottom: 15px;
+    }
+    
+    /* View toggle */
+    .view-container {
+      display: none;
+    }
+    
+    .view-container.active {
+      display: block;
+    }
+    
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      overflow: hidden;
+      transform: translateY(-20px);
+      opacity: 0;
+      transition: all 0.3s ease-out;
+    }
+    
+    .modal.active .modal-content {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .modal-header {
+      padding: 20px 30px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h3 {
+      font-weight: 500;
+      margin: 0;
+    }
+    
+    .close {
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .close:hover {
+      transform: rotate(90deg);
+    }
+    
+    .modal-body {
+      padding: 30px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+      outline: none;
+    }
+    
+    .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: white;
+      font-size: 15px;
+    }
+    
+    .modal-footer {
+      padding: 20px 30px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -10px;
+    }
+    
+    .col-md-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding: 0 10px;
+    }
+    
+    .required {
+      color: var(--danger);
+    }
+    
+    /* Status badges */
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-block;
+    }
+    
+    .status-available {
+      background-color: rgba(40, 167, 69, 0.1);
+      color: #28a745;
+    }
+    
+    .status-reserved {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: #ffc107;
+    }
+    
+    .status-expired {
+      background-color: rgba(220, 53, 69, 0.1);
+      color: #dc3545;
+    }
+    
+    /* Additional info row */
+    .additional-info {
+      display: none;
+      background-color: #f9f9f9;
+    }
+    
+    .additional-info.active {
+      display: table-row;
+    }
+    
+    .additional-info td {
+      padding: 20px;
+      border-top: 1px solid #eee;
+    }
+    
+    .info-label {
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-right: 8px;
+    }
+    
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 500;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      transform: translateX(120%);
+      transition: transform 0.3s ease-out;
+      z-index: 1000;
+    }
+    
+    .toast.show {
+      transform: translateX(0);
+    }
+    
+    .toast-success {
+      background-color: #28a745;
+    }
+    
+    .toast-error {
+      background-color: #dc3545;
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+      
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .view-toggle {
+        width: 100%;
+      }
+      
+      .btn {
+        flex: 1;
+        justify-content: center;
+      }
+      
+      .content {
+        padding: 0 15px 20px;
+      }
+      
+      .modal-content {
+        width: 95%;
+        margin: 10% auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2><i class="fas fa-seedling"></i> Inventory  Details</h2>
+      <div class="header-actions">
+        <button class="btn btn-primary" id="addProductBtn">
+          <i class="fas fa-plus"></i> Add Product
+        </button>
+        <button class="btn btn-info" id="addBatchBtn">
+          <i class="fas fa-plus"></i> Add Batch
+        </button>
+      </div>
+      <div class="view-toggle">
+        <button class="btn btn-primary" id="productViewBtn">
+          <i class="fas fa-box"></i> Product View
+        </button>
+        <button class="btn btn-info" id="batchViewBtn">
+          <i class="fas fa-vial"></i> Batch View
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search...">
+        <button type="button" id="searchBtn"><i class="fas fa-search"></i></button>
+      </div>
+
+      <!-- Product View -->
+      <div class="view-container active" id="productView">
+        <div id="productTableContainer">
+          <table id="productTable">
+            <thead>
+              <tr>
+                <th style="width: 50px;"></th>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Shelf Life</th>
+                <th>Supplier</th>
+                <th>Unit Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productTableBody">
+              <!-- Products will be loaded here -->
+            </tbody>
+          </table>
+          <div class="no-data" id="noProductsMessage">
+            <i class="fas fa-box-open"></i>
+            <h5>No Products Found</h5>
+            <p>Add your first product to get started</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Batch View -->
+      <div class="view-container" id="batchView">
+        <div id="batchTableContainer">
+          <table id="batchTable">
+            <thead>
+              <tr>
+                <th>Batch ID</th>
+                <th>Product</th>
+                <th>Batch No.</th>
+                <th>Quantity (kg)</th>
+                <th>Location</th>
+                <th>Expiry Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="batchTableBody">
+              <!-- Batches will be loaded here -->
+            </tbody>
+          </table>
+          <div class="no-data" id="noBatchesMessage">
+            <i class="fas fa-vial"></i>
+            <h5>No Batches Found</h5>
+            <p>Add your first batch to get started</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Product Modal -->
+  <div id="productModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="productModalTitle">Add New Product</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="productForm">
+          <input type="hidden" id="editProductId">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="productName">Product Name <span class="required">*</span></label>
+                <input type="text" id="productName" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="productCategory">Category <span class="required">*</span></label>
+                <select id="productCategory" class="form-select" required>
+                  <option value="">Select category</option>
+                  <option>Seeds</option>
+                  <option>Fertilizers</option>
+                  <option>Tools</option>
+                  <option>Pesticides</option>
+                  <option>Equipment</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="shelfLife">Shelf Life (days) <span class="required">*</span></label>
+                <input type="number" id="shelfLife" class="form-control" min="1" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="supplierName">Supplier Name <span class="required">*</span></label>
+                <input type="text" id="supplierName" class="form-control" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="packagingInfo">Packaging Info <span class="required">*</span></label>
+                <input type="text" id="packagingInfo" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="unitPrice">Unit Price <span class="required">*</span></label>
+                <input type="number" id="unitPrice" class="form-control" min="0" step="0.01" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="productDescription">Description</label>
+            <textarea id="productDescription" class="form-control" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelProductBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveProductBtn">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Batch Modal -->
+  <div id="batchModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="batchModalTitle">Add New Batch</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="batchForm">
+          <input type="hidden" id="editBatchId">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="batchProduct">Product <span class="required">*</span></label>
+                <select id="batchProduct" class="form-select" required>
+                  <option value="">Select product</option>
+                  <!-- Products will be loaded here -->
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="batchNumber">Batch Number <span class="required">*</span></label>
+                <input type="text" id="batchNumber" class="form-control" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="quantity">Quantity (kg) <span class="required">*</span></label>
+                <input type="number" id="quantity" class="form-control" min="0" step="0.1" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="location">Location <span class="required">*</span></label>
+                <input type="text" id="location" class="form-control" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="storageTemp">Storage Temp (°C)</label>
+                <input type="number" id="storageTemp" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="storageHumidity">Storage Humidity (%)</label>
+                <input type="number" id="storageHumidity" class="form-control" min="0" max="100">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="expiryDate">Expiry Date <span class="required">*</span></label>
+                <input type="date" id="expiryDate" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="batchStatus">Status <span class="required">*</span></label>
+                <select id="batchStatus" class="form-select" required>
+                  <option value="Available">Available</option>
+                  <option value="Reserved">Reserved</option>
+                  <option value="Expired">Expired</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelBatchBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveBatchBtn">Save Batch</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="inventory.js"> </script>
+</body>
+</html>
