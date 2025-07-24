@@ -92,7 +92,7 @@
       <td>${product.cropType}</td>
       <td>${formatDate(product.plantingDate)}</td>
       <td>${formatDate(product.harvestDate)}</td>
-      <td>${product.shelfLife} days</td>
+      <td>${product.shelfLife} °C</td>
       <td>
         <div class="packaging-cell" title="${packagingText}">
           ${packagingText}
@@ -128,7 +128,7 @@
 
     // Open Add Product Modal
     addProductBtn.addEventListener('click', () => {
-      document.getElementById('productModalTitle').textContent = 'Add New Product';
+      document.getElementById('productModalTitle').textContent = 'Add New Track Record';
       currentEditId = null;
       productForm.reset();
       productModal.style.display = 'block';

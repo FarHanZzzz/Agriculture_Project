@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AgriProduct Manager</title>
+  <title>Documents</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -452,15 +452,15 @@
 
   <div class="container">
     <div class="header">
-      <h2><i class="fas fa-seedling"></i> AgriProduct Manager</h2>
+      <h2><i class="fas fa-seedling"></i> Documents</h2>
       <button class="btn btn-primary" id="addProductBtn">
-        <i class="fas fa-plus"></i> Add Product
+        <i class="fas fa-plus"></i> Add Document
       </button>
     </div>
 
     <div class="content">
       <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search products...">
+        <input type="text" id="searchInput" placeholder="Search documents...">
         <button type="button" id="searchBtn"><i class="fas fa-search"></i></button>
       </div>
 
@@ -469,13 +469,13 @@
           <thead>
             <tr>
               <th style="width: 50px;"></th>
-              <th>Product ID</th>
-              <th>Name</th>
-              <th>Crop Type</th>
-              <th>Planting Date</th>
-              <th>Harvest Date</th>
-              <th>Shelf Life</th>
-              <th>Packaging</th>
+              <th>Document ID</th>
+              <th>Invoice ID</th>
+              <th>Shipment ID</th>
+              <th>Issue Date</th>
+              <th>Shipment Date</th>
+              <th>Loading Bill</th>
+              <th>Customs Declaration</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -497,7 +497,7 @@
   <div id="productModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="productModalTitle">Add New Product</h3>
+        <h3 id="productModalTitle">Add New Record</h3>
         <span class="close">&times;</span>
       </div>
       <div class="modal-body">
@@ -506,13 +506,14 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="productName">Product Name <span class="required">*</span></label>
+                <label for="productName">Document ID <span class="required">*</span></label>
                 <input type="text" id="productName" class="form-control" required>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="cropType">Crop Type <span class="required">*</span></label>
+                <label for="cropType">Invoice ID<span class="required">*</span></label>
+                <!--<input type="text" id="productName" class="form-control" required>-->
                 <select id="cropType" class="form-select" required>
                   <option value="">Select crop type</option>
                   <option>Fruits</option>
@@ -529,13 +530,13 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="plantingDate">Planting Date <span class="required">*</span></label>
+                <label for="plantingDate">Issue Date <span class="required">*</span></label>
                 <input type="date" id="plantingDate" class="form-control" required>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="harvestDate">Harvest Date <span class="required">*</span></label>
+                <label for="harvestDate">Shipment Date <span class="required">*</span></label>
                 <input type="date" id="harvestDate" class="form-control" required>
               </div>
             </div>
@@ -543,7 +544,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="shelfLife">Shelf Life (days) <span class="required">*</span></label>
+                <label for="shelfLife">Loading Bill<span class="required">*</span></label>
                 <input type="number" id="shelfLife" class="form-control" min="1" required>
               </div>
             </div>
@@ -561,14 +562,14 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="packagingDetails">Packaging Details</label>
-            <textarea id="packagingDetails" class="form-control" rows="3" placeholder="Enter packaging details (e.g., materials, dimensions, weight)"></textarea>
+            <label for="packagingDetails">Customs Declaration</label>
+            <textarea id="packagingDetails" class="form-control" rows="3" placeholder=""></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
-        <button type="button" class="btn btn-primary" id="saveProductBtn">Save Product</button>
+        <button type="button" class="btn btn-primary" id="saveProductBtn">Save</button>
       </div>
     </div>
   </div>
