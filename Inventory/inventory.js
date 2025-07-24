@@ -1,4 +1,6 @@
  // Data structure
+ 
+    // Data structure
     let products = JSON.parse(localStorage.getItem('agriProducts')) || [];
     let batches = JSON.parse(localStorage.getItem('agriBatches')) || [];
     
@@ -27,16 +29,21 @@
     const saveBatchBtn = document.getElementById('saveBatchBtn');
     const batchProductSelect = document.getElementById('batchProduct');
     const toast = document.getElementById('toast');
+    const dynamicActionButton = document.getElementById('dynamicActionButton');
     
-    // Initialize the application
+    
+   // Initialize the application
     document.addEventListener('DOMContentLoaded', () => {
       renderProducts();
       renderBatches();
       setupEventListeners();
       loadProductsForBatchSelect();
+      
+      // Set initial view to product view
+      productViewBtn.click();
     });
     
-    function setupEventListeners() {
+   function setupEventListeners() {
       // View toggle
       productViewBtn.addEventListener('click', () => {
         productViewBtn.classList.add('btn-primary');
@@ -45,15 +52,27 @@
         batchViewBtn.classList.add('btn-info');
         productView.classList.add('active');
         batchView.classList.remove('active');
+        
+        // Update action button
+        dynamicActionButton.innerHTML = '';
+        const newAddBtn = addProductBtn.cloneNode(true);
+        newAddBtn.addEventListener('click', () => openProductModal());
+        dynamicActionButton.appendChild(newAddBtn);
       });
       
-      batchViewBtn.addEventListener('click', () => {
+     batchViewBtn.addEventListener('click', () => {
         batchViewBtn.classList.add('btn-primary');
         batchViewBtn.classList.remove('btn-info');
         productViewBtn.classList.remove('btn-primary');
         productViewBtn.classList.add('btn-info');
         batchView.classList.add('active');
         productView.classList.remove('active');
+        
+        // Update action button
+        dynamicActionButton.innerHTML = '';
+        const newAddBtn = addBatchBtn.cloneNode(true);
+        newAddBtn.addEventListener('click', () => openBatchModal());
+        dynamicActionButton.appendChild(newAddBtn);
       });
       
       // Add buttons
@@ -91,30 +110,31 @@
     
     // Product CRUD operations
     function openProductModal(editId = null) {
-      const form = document.getElementById('productForm');
-      form.reset();
-      
-      if (editId) {
-        productModalTitle.textContent = 'Edit Product';
-        const product = products.find(p => p.id === editId);
-        
-        if (product) {
-          document.getElementById('editProductId').value = product.id;
-          document.getElementById('productName').value = product.name;
-          document.getElementById('productCategory').value = product.category;
-          document.getElementById('shelfLife').value = product.shelfLife;
-          document.getElementById('supplierName').value = product.supplier;
-          document.getElementById('packagingInfo').value = product.packagingInfo;
-          document.getElementById('unitPrice').value = product.unitPrice;
-          document.getElementById('productDescription').value = product.description || '';
-        }
-      } else {
-        productModalTitle.textContent = 'Add New Product';
-        document.getElementById('editProductId').value = '';
-      }
-      
-      openModal(productModal);
+  const form = document.getElementById('productForm');
+  form.reset();
+  
+  if (editId) {
+    productModalTitle.textContent = 'Edit Product';
+    const product = products.find(p => p.id === editId);
+    
+    if (product) {
+      document.getElementById('editProductId').value = product.id;
+      document.getElementById('productName').value = product.name;
+      document.getElementById('productCategory').value = product.category;
+      document.getElementById('shelfLife').value = product.shelfLife;
+      document.getElementById('supplierName').value = product.supplier;
+      document.getElementById('packagingInfo').value = product.packagingInfo;
+      document.getElementById('unitPrice').value = product.unitPrice;
+      document.getElementById('productDescription').value = product.description || '';
     }
+  } else {
+    productModalTitle.textContent = 'Add New Product';
+    document.getElementById('editProductId').value = '';
+  }
+  
+  openModal(productModal);
+}
+
     
     function saveProduct() {
       const form = document.getElementById('productForm');
@@ -185,32 +205,31 @@
     
     // Batch CRUD operations
     function openBatchModal(editId = null) {
-      const form = document.getElementById('batchForm');
-      form.reset();
-      
-      if (editId) {
-        batchModalTitle.textContent = 'Edit Batch';
-        const batch = batches.find(b => b.id === editId);
-        
-        if (batch) {
-          document.getElementById('editBatchId').value = batch.id;
-          document.getElementById('batchProduct').value = batch.productId;
-          document.getElementById('batchNumber').value = batch.batchNumber;
-          document.getElementById('quantity').value = batch.quantity;
-          document.getElementById('location').value = batch.location;
-          document.getElementById('storageTemp').value = batch.storageTemp || '';
-          document.getElementById('storageHumidity').value = batch.storageHumidity || '';
-          document.getElementById('expiryDate').value = batch.expiryDate;
-          document.getElementById('batchStatus').value = batch.status;
-        }
-      } else {
-        batchModalTitle.textContent = 'Add New Batch';
-        document.getElementById('editBatchId').value = '';
-      }
-      
-      openModal(batchModal);
-    }
+  const form = document.getElementById('batchForm');
+  form.reset();
+  
+  if (editId) {
+    batchModalTitle.textContent = 'Edit Batch';
+    const batch = batches.find(b => b.id === editId);
     
+    if (batch) {
+      document.getElementById('editBatchId').value = batch.id;
+      document.getElementById('batchProduct').value = batch.productId;
+      document.getElementById('batchNumber').value = batch.batchNumber;
+      document.getElementById('quantity').value = batch.quantity;
+      document.getElementById('location').value = batch.location;
+      document.getElementById('storageTemp').value = batch.storageTemp || '';
+      document.getElementById('storageHumidity').value = batch.storageHumidity || '';
+      document.getElementById('expiryDate').value = batch.expiryDate;
+      document.getElementById('batchStatus').value = batch.status;
+    }
+  } else {
+    batchModalTitle.textContent = 'Add New Batch';
+    document.getElementById('editBatchId').value = '';
+  }
+  
+  openModal(batchModal);
+}
     function saveBatch() {
       const form = document.getElementById('batchForm');
       if (!form.checkValidity()) {
@@ -281,13 +300,12 @@
       return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
     }
     
-    function openModal(modal) {
-      modal.style.display = 'block';
-      setTimeout(() => {
-        modal.classList.add('active');
-      }, 10);
-    }
-    
+function openModal(modal) {
+  modal.style.display = 'block';
+  setTimeout(() => {
+    modal.classList.add('active');
+  }, 10);
+}
     function closeModal(modal) {
       modal.classList.remove('active');
       setTimeout(() => {

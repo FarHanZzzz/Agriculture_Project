@@ -33,7 +33,7 @@
     
     .container {
       max-width: 1400px;
-      margin: 0 auto;
+      margin: 50px auto;
       background: white;
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
@@ -159,15 +159,20 @@
       background: var(--primary-dark);
     }
     
-    table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
+
+  
+    
+table {
+  max-width: 1400px;
+  width: 100%; /* or a fixed width like 90% or 800px */
+  margin: 0 auto; /* 🔹 This centers it horizontally */
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
     
     th, td {
       padding: 16px 20px;
@@ -493,12 +498,15 @@
       }
     }
   </style>
-</head>
+</head> 
+
 <body>
+  
   <div class="container">
     <div class="header">
-      <h2><i class="fas fa-seedling"></i> Inventory  Details</h2>
-      <div class="header-actions">
+      <h2><i class="fas fa-seedling"></i> Inventory Details</h2>
+      <div class="header-actions" id="headerActions">
+        <!-- Buttons will be shown/hidden based on view -->
         <button class="btn btn-primary" id="addProductBtn">
           <i class="fas fa-plus"></i> Add Product
         </button>
@@ -516,11 +524,29 @@
       </div>
     </div>
 
+
+
+
     <div class="content">
-      <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search...">
-        <button type="button" id="searchBtn"><i class="fas fa-search"></i></button>
+      <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+        <div class="search-bar" style="flex: 1; max-width: 400px;">
+          <input type="text" id="searchInput" placeholder="Search...">
+          <button type="button" id="searchBtn"><i class="fas fa-search"></i></button>
+        </div>
+        <div id="dynamicActionButton"></div>
       </div>
+
+      <!-- Rest of your content remains exactly the same -->
+      <!-- ... -->
+    </div>
+  </div>
+  
+
+
+
+
+
+
 
       <!-- Product View -->
       <div class="view-container active" id="productView">
@@ -735,6 +761,51 @@
   </div>
 
   <div class="toast" id="toast"></div>
+
+  <script>
+    // Add this script to handle the view toggle and button visibility
+    document.addEventListener('DOMContentLoaded', function() {
+      const productViewBtn = document.getElementById('productViewBtn');
+      const batchViewBtn = document.getElementById('batchViewBtn');
+      const productView = document.getElementById('productView');
+      const batchView = document.getElementById('batchView');
+      const headerActions = document.getElementById('headerActions');
+      const dynamicActionButton = document.getElementById('dynamicActionButton');
+      const addProductBtn = document.getElementById('addProductBtn');
+      const addBatchBtn = document.getElementById('addBatchBtn');
+
+      // Initial setup
+      headerActions.style.display = 'none';
+      dynamicActionButton.appendChild(addProductBtn.cloneNode(true));
+      
+      // View toggle functionality
+      productViewBtn.addEventListener('click', function() {
+        productView.classList.add('active');
+        batchView.classList.remove('active');
+        productViewBtn.classList.add('btn-primary');
+        productViewBtn.classList.remove('btn-info');
+        batchViewBtn.classList.remove('btn-primary');
+        batchViewBtn.classList.add('btn-info');
+        
+        // Update action button
+        dynamicActionButton.innerHTML = '';
+        dynamicActionButton.appendChild(addProductBtn.cloneNode(true));
+      });
+
+      batchViewBtn.addEventListener('click', function() {
+        batchView.classList.add('active');
+        productView.classList.remove('active');
+        batchViewBtn.classList.add('btn-primary');
+        batchViewBtn.classList.remove('btn-info');
+        productViewBtn.classList.remove('btn-primary');
+        productViewBtn.classList.add('btn-info');
+        
+        // Update action button
+        dynamicActionButton.innerHTML = '';
+        dynamicActionButton.appendChild(addBatchBtn.cloneNode(true));
+      });
+    });
+  </script>
 
   <script src="inventory.js"> </script>
 </body>
