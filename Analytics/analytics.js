@@ -128,7 +128,7 @@
 
     // Open Add Product Modal
     addProductBtn.addEventListener('click', () => {
-      document.getElementById('productModalTitle').textContent = 'Add New Product';
+      document.getElementById('productModalTitle').textContent = 'Product Analytics';
       currentEditId = null;
       productForm.reset();
       productModal.style.display = 'block';
